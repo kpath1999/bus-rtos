@@ -1,1 +1,132 @@
-# zephyr-projects
+# StingSense: Integrated Sensor Data Collection and Transmission
+
+## Project Overview
+
+StingSense is a comprehensive sensor data collection and transmission solution built on the Actinius Icarus board using Zephyr RTOS 2.7.x. The project integrates multiple sensors (accelerometer, GPS) with real-time clock and LTE connectivity to collect, format, and transmit environmental data.
+
+## Features
+
+- **Accelerometer Data Collection**: Captures 3-axis acceleration measurements (X, Y, Z) using the onboard LIS2DH sensor
+- **GPS Location Tracking**: Retrieves latitude, longitude, and altitude data via the nRF9160 modem
+- **Real-Time Clock**: Provides accurate timestamping of sensor readings in EST timezone
+- **LTE Connectivity**: Transmits collected data over cellular networks using the nRF9160 modem
+- **JSON Formatting**: Structures sensor data in a standardized JSON format for easy processing
+- **Periodic Reporting**: Configurable data collection and transmission interval (default: every 3 seconds)
+
+## Hardware Requirements
+
+- Actinius Icarus Board (nRF9160-based)
+- GPS Antenna (connected to GPS port)
+- LTE Antenna (connected to LTE port)
+- USB connection for power and debugging
+
+## Software Requirements
+
+- Zephyr RTOS 2.7.x
+- Nordic Connect SDK compatible with Zephyr 2.7.x
+- West build tools
+
+## Project Structure
+
+```
+stingsense/
+├── CMakeLists.txt          # Project build configuration
+├── prj.conf                # Zephyr configuration options
+├── src/
+│   ├── main.c              # Application entry point and main loop
+│   ├── accelerometer.c     # LIS2DH accelerometer interface
+│   ├── accelerometer.h     # Accelerometer function declarations
+│   ├── gps.c               # GPS functionality using AT commands
+│   ├── gps.h               # GPS function declarations
+│   ├── rtc.c               # Real-time clock functionality
+│   ├── rtc.h               # RTC function declarations
+│   ├── lte.c               # LTE connectivity and data transmission
+│   ├── lte.h               # LTE function declarations
+│   ├── json_formatter.c    # JSON data formatting utilities
+│   └── json_formatter.h    # JSON formatter declarations
+└── boards/                 # Board-specific configurations
+    └── actinius_icarus_ns.overlay  # Device tree overlays
+```
+
+## Building and Flashing
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/stingsense.git
+   cd stingsense
+   ```
+
+2. Build the project:
+   ```bash
+   west build -b actinius_icarus_ns
+   ```
+
+3. Flash to your Actinius Icarus board:
+   - Locate the `app_update.bin` file in the `build/zephyr/` directory
+   - Upload this file to the Actinius portal
+   - Connect your Icarus board via USB and flash the application
+
+## Data Format
+
+The application collects and transmits data in the following JSON format:
+
+```json
+{
+  "datetime": "2025-03-17 14:55:00 EST",
+  "latitude": 42.3601,
+  "longitude": -71.0589,
+  "altitude": 10.5,
+  "x_accel": -0.153228,
+  "y_accel": 7.048488,
+  "z_accel": 6.435576
+}
+```
+
+## Sample Output
+
+When running, the application outputs formatted sensor data to the serial terminal:
+
+```
+Sensor Data
+-------------------------------------------------------------------------------
+Date/Time: 2025-03-17 14:55:00 EST
+Acceleration: X: -0.153228 (m/s^2), Y: 7.048488 (m/s^2), Z: 6.435576 (m/s^2)
+GPS: Lat: 42.360100, Lon: -71.058900, Alt: 10.500000
+-------------------------------------------------------------------------------
+JSON Data: {"datetime":"2025-03-17 14:55:00 EST","latitude":42.3601,"longitude":-71.0589,"altitude":10.5,"x_accel":-0.153228,"y_accel":7.048488,"z_accel":6.435576}
+-------------------------------------------------------------------------------
+Data successfully sent over LTE
+```
+
+## Implementation Notes
+
+- The project uses AT commands to interface with the nRF9160 modem for GPS and LTE functionality
+- GPS may require several minutes to acquire a fix when used outdoors
+- LTE connectivity requires proper SIM configuration and network coverage
+- Power management is optimized for periodic data collection and transmission
+
+## Configuration Options
+
+Key configuration options in `prj.conf`:
+
+```conf
+# Sensor sampling rate
+CONFIG_LIS2DH_ODR_2=y         # Accelerometer sampling rate
+
+# LTE & GPS
+CONFIG_MODEM=y                # Enable modem functionality
+CONFIG_AT_CMD=y               # Enable AT commands for modem control
+
+# Data transmission interval
+# Modify k_sleep(K_SECONDS(3)) in main.c to change the interval
+```
+
+## License
+
+This project is licensed under the BSD-3-Clause License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Based on Zephyr RTOS sample applications
+- Utilizes Actinius Icarus board capabilities
+- Inspired by environmental monitoring and IoT applications
