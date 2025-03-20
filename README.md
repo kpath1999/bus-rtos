@@ -1,8 +1,8 @@
-# StingSense: Integrated Sensor Data Collection and Transmission
+# Firmware Code for StingSense Project
 
-## Project Overview
+This is where my code will be for the CS 8903 Special Problems class with Professor Ashutosh Dhekne. We're using an Actinius Icarus board for determining Georgia Tech bus behavior across different times of the day. The firmware is created using Zephyr RTOS 2.7.x. Done right, it would integrate multiple sensors (accelerometer, GPS) with real-time clock and LTE connectivity to collect, format, and transmit the bus data.
 
-StingSense is a comprehensive sensor data collection and transmission solution built on the Actinius Icarus board using Zephyr RTOS 2.7.x. The project integrates multiple sensors (accelerometer, GPS) with real-time clock and LTE connectivity to collect, format, and transmit environmental data.
+We call this project StingSense - the 
 
 ## Features
 

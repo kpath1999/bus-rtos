@@ -1,0 +1,1 @@
+Prints out the date and time.

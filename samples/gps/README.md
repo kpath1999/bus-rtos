@@ -1,0 +1,1 @@
+Prints out the GPS coordinates.
