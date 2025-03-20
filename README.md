@@ -2,7 +2,7 @@
 
 This is where my code will be for the CS 8903 Special Problems class with Professor Ashutosh Dhekne. We're using an Actinius Icarus board for determining Georgia Tech bus behavior across different times of the day. The firmware is created using Zephyr RTOS 2.7.x. Done right, it would integrate multiple sensors (accelerometer, GPS) with real-time clock and LTE connectivity to collect, format, and transmit the bus data.
 
-We call this project StingSense - the 
+We call this project _StingSense_ - the 'Sting' comes from the Georgia Tech Stinger buses, and 'Sense' comes from the inertial sensing part of our set-up.
 
 ## Features
 
@@ -29,7 +29,7 @@ We call this project StingSense - the
 ## Project Structure
 
 ```
-stingsense/
+bus-rtos/
 ├── CMakeLists.txt          # Project build configuration
 ├── prj.conf                # Zephyr configuration options
 ├── src/
@@ -52,13 +52,13 @@ stingsense/
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/stingsense.git
-   cd stingsense
+   git clone https://github.com/kpath1999/bus-rtos.git
+   cd bus-rtos
    ```
 
 2. Build the project:
    ```bash
-   west build -b actinius_icarus_ns
+   west build -b actinius_icarus_ns -p always
    ```
 
 3. Flash to your Actinius Icarus board:
@@ -129,4 +129,4 @@ This project is licensed under the BSD-3-Clause License - see the LICENSE file f
 
 - Based on Zephyr RTOS sample applications
 - Utilizes Actinius Icarus board capabilities
-- Inspired by environmental monitoring and IoT applications
+- Inspired by Prof. Dhekne's idea of monitoring bus fleet using IoT technology
