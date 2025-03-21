@@ -30,22 +30,14 @@ We call this project _StingSense_ - the 'Sting' comes from the Georgia Tech Stin
 
 ```
 bus-rtos/
-├── CMakeLists.txt          # Project build configuration
-├── prj.conf                # Zephyr configuration options
-├── src/
-│   ├── main.c              # Application entry point and main loop
-│   ├── accelerometer.c     # LIS2DH accelerometer interface
-│   ├── accelerometer.h     # Accelerometer function declarations
-│   ├── gps.c               # GPS functionality using AT commands
-│   ├── gps.h               # GPS function declarations
-│   ├── rtc.c               # Real-time clock functionality
-│   ├── rtc.h               # RTC function declarations
-│   ├── lte.c               # LTE connectivity and data transmission
-│   ├── lte.h               # LTE function declarations
-│   ├── json_formatter.c    # JSON data formatting utilities
-│   └── json_formatter.h    # JSON formatter declarations
-└── boards/                 # Board-specific configurations
-    └── actinius_icarus_ns.overlay  # Device tree overlays
+├── CMakeLists.txt
+├── prj.conf
+└── src/
+    ├── main.c               # Single unified main()
+    ├── accelerometer.c/h    
+    ├── rtc.c/h              
+    ├── startup.c            # Modem initialization code only
+    ├── gps_helper.c/h       # GPS functionality extracted from Nordic sample
 ```
 
 ## Building and Flashing

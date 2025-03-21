@@ -9,7 +9,7 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(bus_rtos)
 
 zephyr_library_sources(src/startup.c)
-zephyr_library_sources(${NRF_DIR}/samples/cellular/gnss/src/main.c)
+# zephyr_library_sources(${NRF_DIR}/samples/cellular/gnss/src/main.c)
 
 zephyr_library_sources_ifdef(CONFIG_GNSS_SAMPLE_ASSISTANCE_NRF_CLOUD ${NRF_DIR}/samples/cellular/gnss/src/assistance.c)
 zephyr_library_sources_ifdef(CONFIG_GNSS_SAMPLE_ASSISTANCE_SUPL ${NRF_DIR}/samples/cellular/gnss/src/assistance_supl.c)
@@ -20,4 +20,5 @@ target_sources(app PRIVATE
     src/main.c
     src/rtc.c
     src/accelerometer.c
+    src/gps_helper.c
 )
