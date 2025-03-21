@@ -20,5 +20,4 @@ target_sources(app PRIVATE
     src/main.c
     src/rtc.c
     src/accelerometer.c
-    src/gps_helper.c
 )
