@@ -1,77 +1,89 @@
 # 🐝 **StingSense: Buzzing into the Future of Bus Monitoring** 🐝
 
-Welcome to the hive of innovation! Here at Georgia Tech, we're not just riding the bus; we're riding the wave of IoT technology with our **StingSense** project. This is where the rubber meets the road, or rather, where the code meets the bus!
+Welcome to the hive of innovation! At Georgia Tech, we're revolutionizing campus transportation with **StingSense**, an IoT-powered project that tracks and analyzes the behavior of Georgia Tech's Stinger buses. This README outlines the technical details of our project, built on the Actinius Icarus board and Zephyr RTOS.
 
 ## 🎓 **About the Project**
 
-This is where my code will be for the CS 8903 Special Problems class, where we're using the Actinius Icarus board to track and analyze the behavior of Georgia Tech's Stinger buses. With Zephyr RTOS 2.7.x, we're turning these buses into smart, data-collecting machines that can tell us more than just when they're late!
+This repository contains code for the CS 8903 Special Problems class. Using Zephyr RTOS 2.7.x and Nordic's nRF9160-based Actinius Icarus board, **StingSense** collects and processes real-time data from Stinger buses, including acceleration, location, and time synchronization. The goal is to enhance bus monitoring and provide actionable insights.
 
 ## 🌟 **Why StingSense?**
 
-- **Sting**: Because we're all about the Georgia Tech Stinger buses!
-- **Sense**: Because we're sensing everything from acceleration to location, making our buses smarter than ever.
+- **Sting**: Inspired by Georgia Tech's iconic Stinger buses.
+- **Sense**: Enabling smart sensing capabilities for acceleration, GPS location, and more.
 
 ## 🚀 **Features**
 
-- **Accelerometer Data Collection**: Feel the G-forces as the bus navigates the campus. X, Y, Z, we've got it all!
-- **GPS Location Tracking**: Know exactly where your bus is, down to the last decimal degree. No more guessing games!
-- **Real-Time Clock**: Time is of the essence, and we've got it down to the second in EST.
-- **LTE Connectivity**: Our buses are now connected, sending their data to the cloud faster than you can say "buzz off!"
-- **JSON Formatting**: Data so neat, it's like bees organizing their hive.
-- **Periodic Reporting**: Every 3 seconds, we get a fresh batch of data. It's like a bus schedule, but for data!
+- **Accelerometer Data Collection**: Captures real-time acceleration data along X, Y, Z axes to monitor bus movement dynamics.
+- **GPS Location Tracking**: Provides precise latitude, longitude, and altitude data for bus location tracking.
+- **Real-Time Clock (RTC)**: Synchronizes timestamps in EST for accurate data logging.
+- **LTE Connectivity**: Sends collected data to cloud servers using cellular connectivity.
+- **JSON Formatting**: Organizes sensor data into structured JSON for easy parsing and analysis.
+- **Periodic Reporting**: Automatically sends sensor data every 3 seconds for continuous monitoring.
 
 ## 🛠️ **Hardware Requirements**
 
-- **Actinius Icarus Board**: The brain of our operation, powered by nRF9160.
-- **GPS Antenna**: To keep our buses on track.
-- **LTE Antenna**: For that sweet, sweet connectivity.
-- **USB Connection**: For power and debugging, because even bees need a recharge.
+- **Actinius Icarus Board**: IoT development platform powered by Nordic's nRF9160 SiP with LTE-M/NB-IoT and GPS capabilities.
+- **GPS Antenna**: Required for accurate location tracking.
+- **LTE Antenna**: Ensures reliable cellular connectivity for data transmission.
+- **USB Cable**: Facilitates power supply and debugging.
 
 ## 💾 **Software Requirements**
 
-- **Zephyr RTOS 2.7.x**: The operating system that keeps our project buzzing.
-- **Nordic Connect SDK**: Compatible with Zephyr, because we like to play nice with others.
-- **West Build Tools**: Our trusty tool for building and flashing.
+- **Zephyr RTOS 2.7.x**: Lightweight real-time operating system optimized for embedded systems.
+- **Nordic Connect SDK (NCS)**: Provides libraries and tools compatible with Zephyr RTOS for nRF9160 development.
+- **West Build Tools**: Command-line interface for building, flashing, and managing Zephyr projects.
 
 ## 📂 **Project Structure**
 
 ```plaintext
 bus-rtos/
-├── CMakeLists.txt       # The blueprint of our hive
-├── prj.conf             # Configuration, because even bees need rules
+├── CMakeLists.txt        # Build system configuration
+├── prj.conf              # Project-specific configuration
+├── overlay-pgps.conf     # Assisted GPS configuration
+├── overlay-supl.conf     # SUPL (Secure User Plane Location) configuration
+├── Kconfig               # Kernel configuration options
+├── sample.yaml           # Sample YAML configuration file
 └── src/
-    ├── main.c           # The queen bee of our project
-    ├── accelerometer.c/h # Acceleration, acceleration, acceleration!
-    ├── rtc.c/h           # Timekeeping, because punctuality matters
-    ├── startup.c         # Modem initialization, our bus's wake-up call
-    └── gps_helper.c/h    # GPS, because we know where we're going
+    ├── main.c            # Main application logic
+    ├── accelerometer.c/h # Accelerometer driver code
+    ├── rtc.c/h           # Real-Time Clock handling
+    ├── startup.c         # Modem initialization routines
+    ├── assistance/       # Assisted GPS utilities
+    ├── mcc_location/     # Mobile Country Code-based location utilities
+    └── factory_almanac/  # Preloaded GPS almanac files
+└── samples/
+    ├── accelerometer/    # Accelerometer test examples
+    ├── date-time/        # RTC test examples
+    └── gps/              # GPS test examples
+└── boards/
+    ├── actinius_icarus_ns.overlay  # Custom board overlay for Actinius Icarus
+    └── circuitdojo_feather_nrf9160_ns.conf  # Configuration for Circuit Dojo Feather board (alternative)
 ```
 
 ## 🛠️ **Building and Flashing**
 
-1. **Clone the Repository**: 
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/kpath1999/bus-rtos.git
    cd bus-rtos
    ```
 
-2. **Build the Project**: 
+2. **Build the Project**:
    ```bash
    west build -b actinius_icarus_ns -p always
    ```
 
-3. **Flash the Firmware**: 
-   - Find `app_update.bin` in `build/zephyr/`
-   - Upload to the Actinius portal
-   - Connect your Icarus board via USB and flash the app
+3. **Flash the Firmware**:
+   - Locate `app_update.bin` in `build/zephyr/`.
+   - Upload it via the Actinius portal or flash directly using USB connection.
 
 ## 📊 **Data Flow**
 
-![Data Flow Diagram](data_flow_diagram: our data buzzes from the bus to the server!)
+![Data Flow Diagram](data_flow_diagram: Sensor data flows from buses to cloud servers via LTE connectivity.)
 
 ## 📝 **Sample Output**
 
-When our StingSense is running, here's what you'll see:
+When StingSense is operational, it generates output similar to this:
 
 ```
 Sensor Data
@@ -82,18 +94,20 @@ GPS: Lat: 42.360100, Lon: -71.058900, Alt: 10.500000
 -------------------------------------------------------------------------------
 JSON Data: {"datetime":"2025-03-17 14:55:00 EST","latitude":42.3601,"longitude":-71.0589,"altitude":10.5,"x_accel":-0.153228,"y_accel":7.048488,"z_accel":6.435576}
 -------------------------------------------------------------------------------
-Data successfully sent over LTE
+Data successfully sent over LTE.
 ```
 
 ## 📝 **Implementation Notes**
 
-- **AT Commands**: We're talking to the modem like it's a beekeeper.
-- **GPS Fix**: It might take a few minutes to get a fix, but patience is a virtue.
-- **LTE**: Proper SIM and network coverage are key to our hive's communication.
-- **Power Management**: We're optimizing for efficiency, because even bees need to conserve energy.
+- **AT Commands**: Used for modem communication and LTE/GPS configuration.
+- **GPS Fix Delay**: Initial GPS fix may take a few minutes; ensure clear sky visibility.
+- **LTE Connectivity**: Requires a valid SIM card with network coverage supporting LTE-M/NB-IoT.
+- **Power Optimization**: Implemented low-power modes to maximize battery efficiency.
 
 ## 🙏 **Acknowledgments**
 
-- **Zephyr RTOS**: For providing the foundation of our project.
-- **Actinius**: For the Icarus board, our hardware hive.
-- **Prof. Ashutosh Dhekne**: For the brilliant idea of monitoring bus behavior with IoT.
+- **Zephyr RTOS**: For providing a robust foundation for embedded development.
+- **Actinius**: For their powerful Icarus IoT development board.
+- **Prof. Ashutosh Dhekne**: For guiding this innovative project on IoT-enabled bus monitoring.
+
+Buzz into action with StingSense! 🚍🐝
