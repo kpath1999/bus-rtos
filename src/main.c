@@ -13,196 +13,6 @@
 #include <date_time.h>
 
 LOG_MODULE_REGISTER(main, CONFIG_LOG_DEFAULT_LEVEL);
-
-/**
- * Main application entry point for StingSense bus monitoring system.
- * Integrates GNSS (GPS), accelerometer, and RTC functionality to collect
- * and display sensor data from Georgia Tech buses.
- */
-
-int main(void)
-{
-    int err;
-    uint8_t cnt = 0;
-    struct nrf_modem_gnss_nmea_data_frame *nmea_data;
-
-    LOG_INF("Starting StingSense Bus Monitoring System");
-
-    /* ===== INITIALIZATION PHASE ===== */
-    
-    // Initialize modem library for cellular communication
-    err = nrf_modem_lib_init();
-    if (err) {
-        LOG_ERR("Modem library initialization failed, error: %d", err);
-        return err;
-    }
-
-    // Set up reference coordinates for distance calculation (if configured)
-    if (sizeof(CONFIG_GNSS_SAMPLE_REFERENCE_LATITUDE) > 1 &&
-        sizeof(CONFIG_GNSS_SAMPLE_REFERENCE_LONGITUDE) > 1) {
-        ref_used = true;
-        ref_latitude = atof(CONFIG_GNSS_SAMPLE_REFERENCE_LATITUDE);
-        ref_longitude = atof(CONFIG_GNSS_SAMPLE_REFERENCE_LONGITUDE);
-        LOG_INF("Reference coordinates set: %f, %f", ref_latitude, ref_longitude);
-    }
-
-    // Initialize all required subsystems
-    LOG_INF("Initializing hardware subsystems...");
-    
-    // Initialize modem for cellular connectivity
-    if (modem_init() != 0) {
-        LOG_ERR("Failed to initialize modem");
-        return -1;
-    }
-    
-    // Initialize sample-specific configurations
-    if (sample_init() != 0) {
-        LOG_ERR("Failed to initialize sample");
-        return -1;
-    }
-    
-    // Initialize and start GNSS (GPS) module
-    if (gnss_init_and_start() != 0) {
-        LOG_ERR("Failed to initialize and start GNSS");
-        return -1;
-    }
-    
-    // Record timestamp for fix tracking
-    fix_timestamp = k_uptime_get();
-    
-    // Initialize accelerometer sensor
-    LOG_INF("Initializing accelerometer...");
-    if (!init_accelerometer()) {
-        LOG_ERR("Accelerometer initialization failed");
-        return -1;
-    }
-    
-    // Initialize real-time clock
-    LOG_INF("Initializing RTC...");
-    if (!init_rtc()) {
-        LOG_ERR("RTC initialization failed");
-        return -1;
-    }
-    
-    // Set initial time (March 19, 2025, 8:25 PM)
-    LOG_INF("Setting initial RTC time...");
-    set_rtc_time(2025, 3, 19, 20, 25, 0);
-
-    /* ===== MAIN APPLICATION LOOP ===== */
-    
-    // Display header for sensor dashboard
-    printk("Sensor Data Dashboard\n");
-    printk("===============================================\n");
-
-    while (1) {
-        /* ----- Collect and display accelerometer data ----- */
-        double x_accel = 0, y_accel = 0, z_accel = 0;
-        get_accelerometer_data(&x_accel, &y_accel, &z_accel);
-        
-        /* ----- Collect and display current time ----- */
-        struct datetime dt;
-        get_datetime(&dt);
-
-        // Display date and time
-        printf("Date: %04d-%02d-%02d\n", dt.year, dt.month, dt.day);
-        printf("Time: %02d:%02d:%02d\n", dt.hour, dt.minute, dt.second);
-
-        // Display accelerometer readings
-        printf("Acceleration:\n X: %.2lf m/s^2\n Y: %.2lf m/s^2\n Z: %.2lf m/s^2\n\n",
-            x_accel, y_accel, z_accel);
-
-        printk("===============================================\n");
-
-        /* ----- Process GNSS (GPS) data ----- */
-        
-        // Wait for events from GNSS module
-        (void)k_poll(events, 2, K_FOREVER);
-
-        // Handle PVT (Position, Velocity, Time) data
-        if (events[0].state == K_POLL_STATE_SEM_AVAILABLE &&
-            k_sem_take(events[0].sem, K_NO_WAIT) == 0) {
-            
-            // Process new PVT data based on configured mode
-            if (IS_ENABLED(CONFIG_GNSS_SAMPLE_MODE_TTFF_TEST)) {
-                // Time-To-First-Fix test mode
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_DEADLINE_MISSED) {
-                    time_blocked++;
-                }
-            } else if (IS_ENABLED(CONFIG_GNSS_SAMPLE_NMEA_ONLY)) {
-                // NMEA-only output mode
-                if (output_paused()) {
-                    goto handle_nmea;
-                }
-
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) {
-                    print_distance_from_reference(&last_pvt);
-                }
-            } else {
-                // Standard PVT and NMEA output mode
-                if (output_paused()) {
-                    goto handle_nmea;
-                }
-
-                // Clear screen and print satellite information
-                printf("\033[1;1H");
-                printf("\033[2J");
-                print_satellite_stats(&last_pvt);
-
-                // Display GNSS status flags
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_DEADLINE_MISSED) {
-                    printf("GNSS operation blocked by LTE\n");
-                }
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_NOT_ENOUGH_WINDOW_TIME) {
-                    printf("Insufficient GNSS time windows\n");
-                }
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_SLEEP_BETWEEN_PVT) {
-                    printf("Sleep period(s) between PVT notifications\n");
-                }
-                printf("-----------------------------------\n");
-
-                // Process and display fix data when available
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) {
-                    // Valid GPS fix obtained
-                    fix_timestamp = k_uptime_get();
-                    print_fix_data(&last_pvt);
-                    print_distance_from_reference(&last_pvt);
-                } else {
-                    // No fix yet, show searching animation
-                    printf("Seconds since last fix: %d\n",
-                           (uint32_t)((k_uptime_get() - fix_timestamp) / 1000));
-                    cnt++;
-                    printf("Searching [%c]\n", update_indicator[cnt%4]);
-                }
-
-                printf("\nNMEA strings:\n\n");
-            }
-        }
-
-handle_nmea:
-        // Process NMEA data if available
-        if (events[1].state == K_POLL_STATE_MSGQ_DATA_AVAILABLE &&
-            k_msgq_get(events[1].msgq, &nmea_data, K_NO_WAIT) == 0) {
-            
-            // Display NMEA strings if output is not paused
-            if (!output_paused()) {
-                printf("%s", nmea_data->nmea_str);
-            }
-            k_free(nmea_data);
-        }
-
-        // Reset event states for next iteration
-        events[0].state = K_POLL_STATE_NOT_READY;
-        events[1].state = K_POLL_STATE_NOT_READY;
-        
-        printk("===============================================\n");
-        
-        // Wait before next data collection cycle
-        k_sleep(K_SECONDS(3));
-    }
-
-    return -1;  // Should never reach here
-}
-
 LOG_MODULE_REGISTER(gnss_sample, CONFIG_GNSS_SAMPLE_LOG_LEVEL);
 
 #define PI 3.14159265358979323846
@@ -858,4 +668,194 @@ static void print_fix_data(struct nrf_modem_gnss_pvt_data_frame *pvt_data)
 	printf("HDOP:           %.01f\n", (double)pvt_data->hdop);
 	printf("VDOP:           %.01f\n", (double)pvt_data->vdop);
 	printf("TDOP:           %.01f\n", (double)pvt_data->tdop);
+}
+
+/**
+ * Main application entry point for StingSense bus monitoring system.
+ * Integrates GNSS (GPS), accelerometer, and RTC functionality to collect
+ * and display sensor data from Georgia Tech buses.
+ */
+
+int main(void)
+{
+    int err;
+    uint8_t cnt = 0;
+    struct nrf_modem_gnss_nmea_data_frame *nmea_data;
+
+    LOG_INF("Starting StingSense Bus Monitoring System");
+
+    /* ===== INITIALIZATION PHASE ===== */
+    
+    // Initialize modem library for cellular communication
+    err = nrf_modem_lib_init();
+    if (err) {
+        LOG_ERR("Modem library initialization failed, error: %d", err);
+        return err;
+    }
+
+    // Set up reference coordinates for distance calculation (if configured)
+    if (sizeof(CONFIG_GNSS_SAMPLE_REFERENCE_LATITUDE) > 1 &&
+        sizeof(CONFIG_GNSS_SAMPLE_REFERENCE_LONGITUDE) > 1) {
+        ref_used = true;
+        ref_latitude = atof(CONFIG_GNSS_SAMPLE_REFERENCE_LATITUDE);
+        ref_longitude = atof(CONFIG_GNSS_SAMPLE_REFERENCE_LONGITUDE);
+        LOG_INF("Reference coordinates set: %f, %f", ref_latitude, ref_longitude);
+    }
+
+    // Initialize all required subsystems
+    LOG_INF("Initializing hardware subsystems...");
+    
+    // Initialize modem for cellular connectivity
+    if (modem_init() != 0) {
+        LOG_ERR("Failed to initialize modem");
+        return -1;
+    }
+    
+    // Initialize sample-specific configurations
+    if (sample_init() != 0) {
+        LOG_ERR("Failed to initialize sample");
+        return -1;
+    }
+    
+    // Initialize and start GNSS (GPS) module
+    if (gnss_init_and_start() != 0) {
+        LOG_ERR("Failed to initialize and start GNSS");
+        return -1;
+    }
+    
+    // Record timestamp for fix tracking
+    fix_timestamp = k_uptime_get();
+    
+    // Initialize accelerometer sensor
+    LOG_INF("Initializing accelerometer...");
+    if (!init_accelerometer()) {
+        LOG_ERR("Accelerometer initialization failed");
+        return -1;
+    }
+    
+    // Initialize real-time clock
+    LOG_INF("Initializing RTC...");
+    if (!init_rtc()) {
+        LOG_ERR("RTC initialization failed");
+        return -1;
+    }
+    
+    // Set initial time (March 19, 2025, 8:25 PM)
+    LOG_INF("Setting initial RTC time...");
+    set_rtc_time(2025, 3, 19, 20, 25, 0);
+
+    /* ===== MAIN APPLICATION LOOP ===== */
+
+    while (1) {
+		// Clear screen for new data
+		printk("\033[1;1H");  // Move cursor to top-left
+        printk("\033[2J");    // Clear screen
+		
+		// Display header for sensor dashboard
+		printk("Sensor Data Dashboard\n");
+		printk("===============================================\n");
+
+        /* ----- Collect and display accelerometer data ----- */
+        double x_accel = 0, y_accel = 0, z_accel = 0;
+        get_accelerometer_data(&x_accel, &y_accel, &z_accel);
+        
+        /* ----- Collect and display current time ----- */
+        struct datetime dt;
+        get_datetime(&dt);
+
+        // Display date and time
+        printf("Date: %04d-%02d-%02d\n", dt.year, dt.month, dt.day);
+        printf("Time: %02d:%02d:%02d\n", dt.hour, dt.minute, dt.second);
+
+        // Display accelerometer readings
+        printf("Acceleration:\n X: %.2lf m/s^2\n Y: %.2lf m/s^2\n Z: %.2lf m/s^2\n\n",
+            x_accel, y_accel, z_accel);
+
+        printk("===============================================\n");
+
+        /* ----- Process GNSS (GPS) data ----- */
+        
+        // Wait for events from GNSS module
+        (void)k_poll(events, 2, K_FOREVER);
+
+        // Handle PVT (Position, Velocity, Time) data
+        if (events[0].state == K_POLL_STATE_SEM_AVAILABLE &&
+            k_sem_take(events[0].sem, K_NO_WAIT) == 0) {
+            
+            // Process new PVT data based on configured mode
+            if (IS_ENABLED(CONFIG_GNSS_SAMPLE_MODE_TTFF_TEST)) {
+                // Time-To-First-Fix test mode
+                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_DEADLINE_MISSED) {
+                    time_blocked++;
+                }
+            } else if (IS_ENABLED(CONFIG_GNSS_SAMPLE_NMEA_ONLY)) {
+                // NMEA-only output mode
+                if (output_paused()) {
+                    goto handle_nmea;
+                }
+
+                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) {
+                    print_distance_from_reference(&last_pvt);
+                }
+            } else {
+                // Standard PVT and NMEA output mode
+                if (output_paused()) {
+                    goto handle_nmea;
+                }
+
+                print_satellite_stats(&last_pvt);
+
+                // Display GNSS status flags
+                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_DEADLINE_MISSED) {
+                    printf("GNSS operation blocked by LTE\n");
+                }
+                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_NOT_ENOUGH_WINDOW_TIME) {
+                    printf("Insufficient GNSS time windows\n");
+                }
+                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_SLEEP_BETWEEN_PVT) {
+                    printf("Sleep period(s) between PVT notifications\n");
+                }
+                printf("-----------------------------------\n");
+
+                // Process and display fix data when available
+                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) {
+                    // Valid GPS fix obtained
+                    fix_timestamp = k_uptime_get();
+                    print_fix_data(&last_pvt);
+                    print_distance_from_reference(&last_pvt);
+                } else {
+                    // No fix yet, show searching animation
+                    printf("Seconds since last fix: %d\n",
+                           (uint32_t)((k_uptime_get() - fix_timestamp) / 1000));
+                    cnt++;
+                    printf("Searching [%c]\n", update_indicator[cnt%4]);
+                }
+
+                printf("\nNMEA strings:\n\n");
+            }
+        }
+
+handle_nmea:
+        // Process NMEA data if available
+        if (events[1].state == K_POLL_STATE_MSGQ_DATA_AVAILABLE &&
+            k_msgq_get(events[1].msgq, &nmea_data, K_NO_WAIT) == 0) {
+            
+            // Display NMEA strings if output is not paused
+            if (!output_paused()) {
+                printf("%s", nmea_data->nmea_str);
+            }
+            k_free(nmea_data);
+        }
+
+        // Reset event states for next iteration
+        events[0].state = K_POLL_STATE_NOT_READY;
+        events[1].state = K_POLL_STATE_NOT_READY;
+        
+        printk("===============================================\n");
+        
+        // Wait before next data collection cycle
+        k_sleep(K_SECONDS(1));
+    }
+
+    return -1;  // Should never reach here
 }
