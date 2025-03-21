@@ -44,8 +44,6 @@ int main(void)
     // char time_str[20];
 
     while (1) {
-        printk("\033[1;1H\033[2J");
-
         double x_accel = 0, y_accel = 0, z_accel = 0;
         get_accelerometer_data(&x_accel, &y_accel, &z_accel);
         
@@ -53,6 +51,10 @@ int main(void)
         struct datetime dt;
         get_datetime(&dt);
         // format_time_12h(dt.hour, dt.minute, dt.second, time_str, sizeof(time_str));
+
+        // Print time to serial console
+        printk("\033[1;1H");  // Move cursor to top-left
+        printk("\033[2J");    // Clear screen
 
         struct gps_data gps_info;
         bool has_gps_fix = gps_fetch_data(&gps_info);
