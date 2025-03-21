@@ -1,6 +1,6 @@
 {
     "format-version": 1,
-    "time": 1742517471,
+    "time": 1742518541,
     "files": [
         {
             "load_address": 98304,
@@ -8,9 +8,9 @@
             "type": "application",
             "board": "actinius_icarus",
             "soc": "nrf9160",
-            "size": 144460,
+            "size": 144267,
             "file": "app_update.bin",
-            "modtime": 1742517471
+            "modtime": 1742518540
         }
     ],
     "name": "bus-rtos",

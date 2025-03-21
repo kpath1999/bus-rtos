@@ -8,6 +8,7 @@
 LOG_MODULE_REGISTER(main, CONFIG_LOG_DEFAULT_LEVEL);
 
 // Function to format time in 12-hour format with AM/PM
+// Not using this currently
 void format_time_12h(int hour, int minute, int second, char *buffer, size_t size)
 {
     const char *period = (hour >= 12) ? "PM" : "AM";
@@ -37,19 +38,21 @@ int main(void)
         return -1;
     }
 
+    // Set initial time (March 19, 2025, 8:25 PM)
     set_rtc_time(2025, 3, 19, 20, 25, 0);
 
-    char time_str[20];
+    // char time_str[20];
 
     while (1) {
         printk("\033[1;1H\033[2J");
 
         double x_accel = 0, y_accel = 0, z_accel = 0;
         get_accelerometer_data(&x_accel, &y_accel, &z_accel);
-
+        
+        // Get current time
         struct datetime dt;
         get_datetime(&dt);
-        format_time_12h(dt.hour, dt.minute, dt.second, time_str, sizeof(time_str));
+        // format_time_12h(dt.hour, dt.minute, dt.second, time_str, sizeof(time_str));
 
         struct gps_data gps_info;
         bool has_gps_fix = gps_fetch_data(&gps_info);
@@ -58,7 +61,7 @@ int main(void)
         printk("===============================================\n");
 
         printf("Date: %04d-%02d-%02d\n", dt.year, dt.month, dt.day);
-        printf("Time: %s EST\n\n", time_str);
+        printf("Time: %02d:%02d:%02d\n", dt.hour, dt.minute, dt.second);
 
         printf("Acceleration:\n X: %.2lf m/s^2\n Y: %.2lf m/s^2\n Z: %.2lf m/s^2\n\n",
             x_accel, y_accel, z_accel);
@@ -74,7 +77,7 @@ int main(void)
 
         printk("===============================================\n");
         
-        k_sleep(K_SECONDS(3));
+        k_sleep(K_SECONDS(1));
     }
 
     return 0;

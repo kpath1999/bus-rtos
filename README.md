@@ -1,82 +1,77 @@
-# Firmware Code for StingSense Project
+# 🐝 **StingSense: Buzzing into the Future of Bus Monitoring** 🐝
 
-This is where my code will be for the CS 8903 Special Problems class with Professor Ashutosh Dhekne. We're using an Actinius Icarus board for determining Georgia Tech bus behavior across different times of the day. The firmware is created using Zephyr RTOS 2.7.x. Done right, it would integrate multiple sensors (accelerometer, GPS) with real-time clock and LTE connectivity to collect, format, and transmit the bus data.
+Welcome to the hive of innovation! Here at Georgia Tech, we're not just riding the bus; we're riding the wave of IoT technology with our **StingSense** project. This is where the rubber meets the road, or rather, where the code meets the bus!
 
-We call this project _StingSense_ - the 'Sting' comes from the Georgia Tech Stinger buses, and 'Sense' comes from the inertial sensing part of our set-up.
+## 🎓 **About the Project**
 
-## Features
+This repository is the buzzing heart of our CS 8903 Special Problems class, where we're using the Actinius Icarus board to track and analyze the behavior of Georgia Tech's Stinger buses. With Zephyr RTOS 2.7.x, we're turning these buses into smart, data-collecting machines that can tell us more than just when they're late!
 
-- **Accelerometer Data Collection**: Captures 3-axis acceleration measurements (X, Y, Z) using the onboard LIS2DH sensor
-- **GPS Location Tracking**: Retrieves latitude, longitude, and altitude data via the nRF9160 modem
-- **Real-Time Clock**: Provides accurate timestamping of sensor readings in EST timezone
-- **LTE Connectivity**: Transmits collected data over cellular networks using the nRF9160 modem
-- **JSON Formatting**: Structures sensor data in a standardized JSON format for easy processing
-- **Periodic Reporting**: Configurable data collection and transmission interval (default: every 3 seconds)
+## 🌟 **Why StingSense?**
 
-## Hardware Requirements
+- **Sting**: Because we're all about the Georgia Tech Stinger buses!
+- **Sense**: Because we're sensing everything from acceleration to location, making our buses smarter than ever.
 
-- Actinius Icarus Board (nRF9160-based)
-- GPS Antenna (connected to GPS port)
-- LTE Antenna (connected to LTE port)
-- USB connection for power and debugging
+## 🚀 **Features**
 
-## Software Requirements
+- **Accelerometer Data Collection**: Feel the G-forces as the bus navigates the campus. X, Y, Z, we've got it all!
+- **GPS Location Tracking**: Know exactly where your bus is, down to the last decimal degree. No more guessing games!
+- **Real-Time Clock**: Time is of the essence, and we've got it down to the second in EST.
+- **LTE Connectivity**: Our buses are now connected, sending their data to the cloud faster than you can say "buzz off!"
+- **JSON Formatting**: Data so neat, it's like bees organizing their hive.
+- **Periodic Reporting**: Every 3 seconds, we get a fresh batch of data. It's like a bus schedule, but for data!
 
-- Zephyr RTOS 2.7.x
-- Nordic Connect SDK compatible with Zephyr 2.7.x
-- West build tools
+## 🛠️ **Hardware Requirements**
 
-## Project Structure
+- **Actinius Icarus Board**: The brain of our operation, powered by nRF9160.
+- **GPS Antenna**: To keep our buses on track.
+- **LTE Antenna**: For that sweet, sweet connectivity.
+- **USB Connection**: For power and debugging, because even bees need a recharge.
 
-```
+## 💾 **Software Requirements**
+
+- **Zephyr RTOS 2.7.x**: The operating system that keeps our project buzzing.
+- **Nordic Connect SDK**: Compatible with Zephyr, because we like to play nice with others.
+- **West Build Tools**: Our trusty tool for building and flashing.
+
+## 📂 **Project Structure**
+
+```plaintext
 bus-rtos/
-├── CMakeLists.txt
-├── prj.conf
+├── CMakeLists.txt       # The blueprint of our hive
+├── prj.conf             # Configuration, because even bees need rules
 └── src/
-    ├── main.c               # Single unified main()
-    ├── accelerometer.c/h    
-    ├── rtc.c/h              
-    ├── startup.c            # Modem initialization code only
-    ├── gps_helper.c/h       # GPS functionality extracted from Nordic sample
+    ├── main.c           # The queen bee of our project
+    ├── accelerometer.c/h # Acceleration, acceleration, acceleration!
+    ├── rtc.c/h           # Timekeeping, because punctuality matters
+    ├── startup.c         # Modem initialization, our bus's wake-up call
+    └── gps_helper.c/h    # GPS, because we know where we're going
 ```
 
-## Building and Flashing
+## 🛠️ **Building and Flashing**
 
-1. Clone this repository:
+1. **Clone the Repository**: 
    ```bash
    git clone https://github.com/kpath1999/bus-rtos.git
    cd bus-rtos
    ```
 
-2. Build the project:
+2. **Build the Project**: 
    ```bash
    west build -b actinius_icarus_ns -p always
    ```
 
-3. Flash to your Actinius Icarus board:
-   - Locate the `app_update.bin` file in the `build/zephyr/` directory
-   - Upload this file to the Actinius portal
-   - Connect your Icarus board via USB and flash the application
+3. **Flash the Firmware**: 
+   - Find `app_update.bin` in `build/zephyr/`
+   - Upload to the Actinius portal
+   - Connect your Icarus board via USB and flash the app
 
-## Data Format
+## 📊 **Data Flow**
 
-The application collects and transmits data in the following JSON format:
+![Data Flow Diagram](data_flow_diagram: our data buzzes from the bus to the server!)
 
-```json
-{
-  "datetime": "2025-03-17 14:55:00 EST",
-  "latitude": 42.3601,
-  "longitude": -71.0589,
-  "altitude": 10.5,
-  "x_accel": -0.153228,
-  "y_accel": 7.048488,
-  "z_accel": 6.435576
-}
-```
+## 📝 **Sample Output**
 
-## Sample Output
-
-When running, the application outputs formatted sensor data to the serial terminal:
+When our StingSense is running, here's what you'll see:
 
 ```
 Sensor Data
@@ -90,35 +85,15 @@ JSON Data: {"datetime":"2025-03-17 14:55:00 EST","latitude":42.3601,"longitude":
 Data successfully sent over LTE
 ```
 
-## Implementation Notes
+## 📝 **Implementation Notes**
 
-- The project uses AT commands to interface with the nRF9160 modem for GPS and LTE functionality
-- GPS may require several minutes to acquire a fix when used outdoors
-- LTE connectivity requires proper SIM configuration and network coverage
-- Power management is optimized for periodic data collection and transmission
+- **AT Commands**: We're talking to the modem like it's a beekeeper.
+- **GPS Fix**: It might take a few minutes to get a fix, but patience is a virtue.
+- **LTE**: Proper SIM and network coverage are key to our hive's communication.
+- **Power Management**: We're optimizing for efficiency, because even bees need to conserve energy.
 
-## Configuration Options
+## 🙏 **Acknowledgments**
 
-Key configuration options in `prj.conf`:
-
-```conf
-# Sensor sampling rate
-CONFIG_LIS2DH_ODR_2=y         # Accelerometer sampling rate
-
-# LTE & GPS
-CONFIG_MODEM=y                # Enable modem functionality
-CONFIG_AT_CMD=y               # Enable AT commands for modem control
-
-# Data transmission interval
-# Modify k_sleep(K_SECONDS(3)) in main.c to change the interval
-```
-
-## License
-
-This project is licensed under the BSD-3-Clause License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Based on Zephyr RTOS sample applications
-- Utilizes Actinius Icarus board capabilities
-- Inspired by Prof. Dhekne's idea of monitoring bus fleet using IoT technology
+- **Zephyr RTOS**: For providing the foundation of our project.
+- **Actinius**: For the Icarus board, our hardware hive.
+- **Prof. Ashutosh Dhekne**: For the brilliant idea of monitoring bus behavior with IoT.
