@@ -4,7 +4,7 @@ Welcome to the hive of innovation! Here at Georgia Tech, we're not just riding t
 
 ## 🎓 **About the Project**
 
-This repository is the buzzing heart of our CS 8903 Special Problems class, where we're using the Actinius Icarus board to track and analyze the behavior of Georgia Tech's Stinger buses. With Zephyr RTOS 2.7.x, we're turning these buses into smart, data-collecting machines that can tell us more than just when they're late!
+This is where my code will be for the CS 8903 Special Problems class, where we're using the Actinius Icarus board to track and analyze the behavior of Georgia Tech's Stinger buses. With Zephyr RTOS 2.7.x, we're turning these buses into smart, data-collecting machines that can tell us more than just when they're late!
 
 ## 🌟 **Why StingSense?**
 
