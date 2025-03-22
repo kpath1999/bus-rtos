@@ -676,11 +676,104 @@ static void print_fix_data(struct nrf_modem_gnss_pvt_data_frame *pvt_data)
  * and display sensor data from Georgia Tech buses.
  */
 
+// Structure to hold consolidated sensor data
+struct sensor_data {
+	struct datetime dt;
+	double x_accel;
+	double y_accel;
+	double z_accel;
+	bool gps_fix_valid;
+	double latitude;
+	double longitude;
+	double altitude;
+	uint32_t seconds_since_fix;
+	char nmea_str[256];
+};
+
+// Function to collect all sensor data atomically
+static int collect_sensor_data(struct sensor_data *data)
+{
+	if (data == NULL) {
+		return -EINVAL;
+	}
+
+	// Get current date and time
+    get_datetime(&data->dt);
+    // No need to check return value since function is void
+    
+    // Get accelerometer data
+    get_accelerometer_data(&data->x_accel, &data->y_accel, &data->z_accel);
+    // No need to check return value since function is void
+
+	// Process GPS data
+	data->gps_fix_valid = (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) != 0;
+
+	if (data->gps_fix_valid) {
+		// We have a valid GPS fix
+		data->latitude = last_pvt.latitude;
+		data->longitude = last_pvt.longitude;
+		data->altitude = last_pvt.altitude;
+		fix_timestamp = k_uptime_get(); // update fix timestamp
+		data->seconds_since_fix = 0;
+	} else {
+		// no valid fix, calculate time since last fix
+		data->seconds_since_fix = (uint32_t)((k_uptime_get() - fix_timestamp) / 1000);
+	}
+	return 0;
+}
+
+// Function to display all sensor data in a consistent, atomic operation
+static void display_sensor_data(const struct sensor_data *data, uint8_t cnt)
+{
+	if (data == NULL) {
+		return;
+	}
+
+	// Clear screen using ANSI escape sequences
+	printk("\033[1;1H");  // Move cursor to top-left
+	printk("\033[2J");    // Clear screen
+
+	// Display header and timestamp
+    printk("===== StingSense Bus Monitoring System =====\n\n");
+    
+    // Display all sensor data in a consistent format
+    printk("Sensor Data\n");
+    printk("-------------------------------------------------------------------------------\n");
+    printk("Date/Time: %04d-%02d-%02d %02d:%02d:%02d tau\n", 
+           data->dt.year, data->dt.month, data->dt.day,
+           data->dt.hour, data->dt.minute, data->dt.second);
+    
+    printk("Acceleration: X: %f (m/s^2), Y: %f (m/s^2), Z: %f (m/s^2)\n",
+           data->x_accel, data->y_accel, data->z_accel);
+    
+    if (data->gps_fix_valid) {
+        printk("GPS: Lat: %f, Lon: %f, Alt: %f\n", 
+               data->latitude, data->longitude, data->altitude);
+    } else {
+        printk("GPS: Searching [%c] (No fix for %u seconds)\n", 
+               update_indicator[cnt % 4], data->seconds_since_fix);
+    }
+    printk("-------------------------------------------------------------------------------\n");
+    
+    // Format data as JSON for potential transmission
+    printk("JSON Data: {\"datetime\":\"%04d-%02d-%02d %02d:%02d:%02d tau\","
+           "\"latitude\":%f,\"longitude\":%f,\"altitude\":%f,"
+           "\"x_accel\":%f,\"y_accel\":%f,\"z_accel\":%f}\n",
+           data->dt.year, data->dt.month, data->dt.day,
+           data->dt.hour, data->dt.minute, data->dt.second,
+           data->latitude, data->longitude, data->altitude,
+           data->x_accel, data->y_accel, data->z_accel);
+    printk("-------------------------------------------------------------------------------\n");
+}
+
+
 int main(void)
 {
     int err;
     uint8_t cnt = 0;
     struct nrf_modem_gnss_nmea_data_frame *nmea_data;
+	struct sensor_data sensor_data = {0};
+	int64_t next_update_time;
 
     LOG_INF("Starting StingSense Bus Monitoring System");
 
@@ -744,117 +837,71 @@ int main(void)
     LOG_INF("Setting initial RTC time...");
     set_rtc_time(2025, 3, 19, 20, 25, 0);
 
+	// Set initial update time to current time
+	next_update_time = k_uptime_get();
+
     /* ===== MAIN APPLICATION LOOP ===== */
 
     while (1) {
-		// Clear screen for new data
-		printk("\033[1;1H");  // Move cursor to top-left
-        printk("\033[2J");    // Clear screen
-		
-        /* ----- Collect and display accelerometer data ----- */
-        double x_accel = 0, y_accel = 0, z_accel = 0;
-        get_accelerometer_data(&x_accel, &y_accel, &z_accel);
+        // Calculate time until next update
+        int64_t now = k_uptime_get();
+        int64_t remaining = next_update_time - now;
         
-        /* ----- Collect and display current time ----- */
-        struct datetime dt;
-        get_datetime(&dt);
-
-        // Display date and time
-        printf("Date: %04d-%02d-%02d, ", dt.year, dt.month, dt.day);
-        printf("Time: %02d:%02d:%02d\n", dt.hour, dt.minute, dt.second);
-
-		// Wait 1 second before updating
-        k_sleep(K_SECONDS(1));
-
-        // Display accelerometer readings
-        printf("Acceleration:\n X: %.2lf m/s^2\n Y: %.2lf m/s^2\n Z: %.2lf m/s^2\n\n",
-            x_accel, y_accel, z_accel);
-
-		// Wait 1 second before updating
-        k_sleep(K_SECONDS(1));
-
-        /* ----- Process GNSS (GPS) data ----- */
+        // If it's time for the next update (or past time)
+        if (remaining <= 0) {
+            // Collect all sensor data atomically 
+            collect_sensor_data(&sensor_data);
+            
+            // Display all collected data in a single, atomic operation
+            cnt++;
+            display_sensor_data(&sensor_data, cnt);
+            
+            // Schedule next update precisely 3 seconds from the last scheduled time
+            next_update_time += (3 * MSEC_PER_SEC);
+            
+            // If we've fallen behind by more than a full cycle, reset the schedule
+            if (next_update_time < k_uptime_get()) {
+                LOG_WRN("Update schedule has fallen behind, resetting");
+                next_update_time = k_uptime_get() + (3 * MSEC_PER_SEC);
+            }
+        }
         
-        // Wait for events from GNSS module
-        (void)k_poll(events, 2, K_FOREVER);
+        // Calculate timeout for k_poll based on time until next update
+        int32_t timeout_ms = remaining > 0 ? (int32_t)(remaining) : 10;
+        
+        // Wait for events from GNSS module, with timeout based on next update time
+        (void)k_poll(events, 2, K_MSEC(timeout_ms));
 
-        // Handle PVT (Position, Velocity, Time) data
+        // Handle PVT (Position, Velocity, Time) data if available
         if (events[0].state == K_POLL_STATE_SEM_AVAILABLE &&
             k_sem_take(events[0].sem, K_NO_WAIT) == 0) {
             
-            // Process new PVT data based on configured mode
+            // Process new PVT data (update internal state only, no printing)
             if (IS_ENABLED(CONFIG_GNSS_SAMPLE_MODE_TTFF_TEST)) {
-                // Time-To-First-Fix test mode
                 if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_DEADLINE_MISSED) {
                     time_blocked++;
                 }
-            } else if (IS_ENABLED(CONFIG_GNSS_SAMPLE_NMEA_ONLY)) {
-                // NMEA-only output mode
-                if (output_paused()) {
-                    goto handle_nmea;
-                }
-
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) {
-                    print_distance_from_reference(&last_pvt);
-                }
-            } else {
-                // Standard PVT and NMEA output mode
-                if (output_paused()) {
-                    goto handle_nmea;
-                }
-
-                print_satellite_stats(&last_pvt);
-
-                // Display GNSS status flags
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_DEADLINE_MISSED) {
-                    printf("GNSS operation blocked by LTE\n");
-                }
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_NOT_ENOUGH_WINDOW_TIME) {
-                    printf("Insufficient GNSS time windows\n");
-                }
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_SLEEP_BETWEEN_PVT) {
-                    printf("Sleep period(s) between PVT notifications\n");
-                }
-                printf("-----------------------------------\n");
-
-                // Process and display fix data when available
-                if (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) {
-                    // Valid GPS fix obtained
-                    fix_timestamp = k_uptime_get();
-                    print_fix_data(&last_pvt);
-                    print_distance_from_reference(&last_pvt);
-                } else {
-                    // No fix yet, show searching animation
-                    printf("Seconds since last fix: %d\n",
-                           (uint32_t)((k_uptime_get() - fix_timestamp) / 1000));
-                    cnt++;
-                    printf("Searching [%c]\n", update_indicator[cnt%4]);
-                }
-
-                printf("\nNMEA strings:\n\n");
             }
         }
 
-handle_nmea:
-        // Process NMEA data if available
+        // Handle NMEA data if available
         if (events[1].state == K_POLL_STATE_MSGQ_DATA_AVAILABLE &&
             k_msgq_get(events[1].msgq, &nmea_data, K_NO_WAIT) == 0) {
             
-            // Display NMEA strings if output is not paused
-            if (!output_paused()) {
-                printf("%s", nmea_data->nmea_str);
+            // Store NMEA data for later display (not immediate printing)
+            if (nmea_data && !output_paused()) {
+                strncpy(sensor_data.nmea_str, nmea_data->nmea_str, 
+                        sizeof(sensor_data.nmea_str) - 1);
+                sensor_data.nmea_str[sizeof(sensor_data.nmea_str) - 1] = '\0';
             }
+            
+            // Free the memory when done
             k_free(nmea_data);
         }
 
         // Reset event states for next iteration
         events[0].state = K_POLL_STATE_NOT_READY;
         events[1].state = K_POLL_STATE_NOT_READY;
-        
-        printk("===============================================\n");
-        
-        // Wait before next data collection cycle
-        k_sleep(K_SECONDS(1));
     }
 
     return -1;  // Should never reach here

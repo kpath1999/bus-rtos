@@ -97,6 +97,12 @@ JSON Data: {"datetime":"2025-03-17 14:55:00 EST","latitude":42.3601,"longitude":
 Data successfully sent over LTE.
 ```
 
+I hope to get there soon. Currently, this is what'd you see in the serial output:
+
+![terminal window from actinius](images/serial-output-3-21-2025.png)
+
+Acceleration looks fine, but the date/time values do not make sense. I also have to validate if the GPS satellite detection works by moving my set-up outside.
+
 ## 📝 **Implementation Notes**
 
 - **AT Commands**: Used for modem communication and LTE/GPS configuration.
