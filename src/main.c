@@ -751,10 +751,6 @@ int main(void)
 		printk("\033[1;1H");  // Move cursor to top-left
         printk("\033[2J");    // Clear screen
 		
-		// Display header for sensor dashboard
-		printk("Sensor Data Dashboard\n");
-		printk("===============================================\n");
-
         /* ----- Collect and display accelerometer data ----- */
         double x_accel = 0, y_accel = 0, z_accel = 0;
         get_accelerometer_data(&x_accel, &y_accel, &z_accel);
@@ -764,14 +760,18 @@ int main(void)
         get_datetime(&dt);
 
         // Display date and time
-        printf("Date: %04d-%02d-%02d\n", dt.year, dt.month, dt.day);
+        printf("Date: %04d-%02d-%02d, ", dt.year, dt.month, dt.day);
         printf("Time: %02d:%02d:%02d\n", dt.hour, dt.minute, dt.second);
+
+		// Wait 1 second before updating
+        k_sleep(K_SECONDS(1));
 
         // Display accelerometer readings
         printf("Acceleration:\n X: %.2lf m/s^2\n Y: %.2lf m/s^2\n Z: %.2lf m/s^2\n\n",
             x_accel, y_accel, z_accel);
 
-        printk("===============================================\n");
+		// Wait 1 second before updating
+        k_sleep(K_SECONDS(1));
 
         /* ----- Process GNSS (GPS) data ----- */
         

@@ -1,5 +1,6 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
+#include <stdio.h>
 #include "rtc.h"
 
 LOG_MODULE_REGISTER(main, CONFIG_LOG_DEFAULT_LEVEL);

@@ -34,8 +34,8 @@ mcuboot_primary:
   end_address: 0x88000
   orig_span: &id001
   - app
-  - mcuboot_pad
   - tfm
+  - mcuboot_pad
   region: flash_primary
   sharers: 0x1
   size: 0x78000
