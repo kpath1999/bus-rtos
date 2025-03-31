@@ -1,13 +1,13 @@
 # Target labels
  tfm
 # Source files and their labels
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/CMakeFiles/tfm
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/CMakeFiles/tfm.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/CMakeFiles/tfm-complete.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-build.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-configure.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-download.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-install.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-mkdir.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-patch.rule
-C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-update.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/CMakeFiles/tfm
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/CMakeFiles/tfm.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/CMakeFiles/tfm-complete.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-build.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-configure.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-download.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-install.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-mkdir.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-patch.rule
+C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/tfm-prefix/src/tfm-stamp/tfm-update.rule

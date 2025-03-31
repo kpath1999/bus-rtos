@@ -1094,7 +1094,7 @@ arduino_spi: &spi3 { };
 };
 # 8 "C:/ncs/v2.7.0/zephyr/boards/actinius/icarus/actinius_icarus_nrf9160_ns_2_0_0.overlay" 2
 # 0 "<command-line>" 2
-# 1 "C:/Users/kausa/bus-rtos/boards/actinius_icarus_ns.overlay" 1
+# 1 "C:/ncs/nRF9160_Examples/bus_rtos_local/boards/actinius_icarus_ns.overlay" 1
 / {
     aliases {
         rtc = &rtc0;

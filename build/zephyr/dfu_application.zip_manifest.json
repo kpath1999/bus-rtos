@@ -1,6 +1,6 @@
 {
     "format-version": 1,
-    "time": 1742604847,
+    "time": 1743380095,
     "files": [
         {
             "load_address": 98304,
@@ -8,12 +8,12 @@
             "type": "application",
             "board": "actinius_icarus",
             "soc": "nrf9160",
-            "size": 146923,
+            "size": 146760,
             "file": "app_update.bin",
-            "modtime": 1742604847
+            "modtime": 1743380095
         }
     ],
-    "name": "bus-rtos",
+    "name": "bus_rtos_local",
     "firmware": {
         "zephyr": {
             "revision": "100befc70c74f7ec83dd8ac3171ee18eeddb4dbd"

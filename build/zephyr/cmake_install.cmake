@@ -39,241 +39,241 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/arch/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/arch/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/lib/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/lib/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/soc/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/soc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/boards/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/boards/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/subsys/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/subsys/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/drivers/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/nrf/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/mcuboot/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/mcuboot/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/mbedtls/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/mbedtls/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/trusted-firmware-m/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/trusted-firmware-m/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/cjson/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/cjson/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/azure-sdk-for-c/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/azure-sdk-for-c/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/cirrus-logic/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/cirrus-logic/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/openthread/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/openthread/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/suit-processor/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/suit-processor/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/memfault-firmware-sdk/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/memfault-firmware-sdk/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/pcf85063a/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/pcf85063a/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/canopennode/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/canopennode/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/chre/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/chre/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/lz4/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/lz4/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/nanopb/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nanopb/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/zscilib/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/zscilib/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/cmsis/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/cmsis/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/cmsis-dsp/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/cmsis-dsp/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/cmsis-nn/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/cmsis-nn/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/fatfs/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/fatfs/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/hal_nordic/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/hal_nordic/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/hal_st/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/hal_st/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/hal_wurthelektronik/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/hal_wurthelektronik/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/libmetal/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/libmetal/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/liblc3/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/liblc3/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/littlefs/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/littlefs/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/loramac-node/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/loramac-node/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/lvgl/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/lvgl/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/mipi-sys-t/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/mipi-sys-t/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/nrf_hw_models/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf_hw_models/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/open-amp/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/open-amp/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/picolibc/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/picolibc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/segger/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/segger/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/tinycrypt/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/tinycrypt/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/uoscore-uedhoc/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/uoscore-uedhoc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/zcbor/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/zcbor/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/nrfxlib/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrfxlib/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/connectedhomeip/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/connectedhomeip/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/kernel/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/kernel/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/cmake/flash/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/cmake/flash/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/cmake/usage/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/cmake/usage/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/cmake/reports/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/cmake/reports/cmake_install.cmake")
 endif()
 

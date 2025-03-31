@@ -1,4 +1,4 @@
-# 🐝 **StingSense: Buzzing into the Future of Bus Monitoring** 🐝
+# 🐝 **StingSense: Buzzing into the Future of Bus Monitoring**
 
 Welcome to the hive of innovation! At Georgia Tech, we're revolutionizing campus transportation with **StingSense**, an IoT-powered project that tracks and analyzes the behavior of Georgia Tech's Stinger buses. This README outlines the technical details of our project, built on the Actinius Icarus board and Zephyr RTOS.
 

@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/kausa/bus-rtos/build/tfm/api_ns")
+  set(CMAKE_INSTALL_PREFIX "C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

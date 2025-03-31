@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/kausa/bus-rtos/build/tfm/api_ns")
+  set(CMAKE_INSTALL_PREFIX "C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,19 +39,19 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/tfm/platform/target/nrf91/nrf_common/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/platform/target/nrf91/nrf_common/cmake_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "C:/Users/kausa/bus-rtos/build/tfm/api_ns/platform/common/nrf91/nrfx_config_nrf91.h;C:/Users/kausa/bus-rtos/build/tfm/api_ns/platform/common/nrf91/CMakeLists.txt;C:/Users/kausa/bus-rtos/build/tfm/api_ns/platform/common/nrf91/config.cmake")
+   "C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns/platform/common/nrf91/nrfx_config_nrf91.h;C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns/platform/common/nrf91/CMakeLists.txt;C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns/platform/common/nrf91/config.cmake")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "C:/Users/kausa/bus-rtos/build/tfm/api_ns/platform/common/nrf91" TYPE FILE MESSAGE_NEVER FILES
+  file(INSTALL DESTINATION "C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns/platform/common/nrf91" TYPE FILE MESSAGE_NEVER FILES
     "C:/ncs/v2.7.0/modules/tee/tf-m/trusted-firmware-m/platform/ext/target/nordic_nrf/common/nrf91/nrfx_config_nrf91.h"
     "C:/ncs/v2.7.0/modules/tee/tf-m/trusted-firmware-m/platform/ext/target/nordic_nrf/common/nrf91/ns/CMakeLists.txt"
     "C:/ncs/v2.7.0/modules/tee/tf-m/trusted-firmware-m/platform/ext/target/nordic_nrf/common/nrf91/config.cmake"
@@ -60,14 +60,14 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "C:/Users/kausa/bus-rtos/build/tfm/api_ns/platform/common/nrf91/partition;C:/Users/kausa/bus-rtos/build/tfm/api_ns/platform/common/nrf91/tests")
+   "C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns/platform/common/nrf91/partition;C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns/platform/common/nrf91/tests")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "C:/Users/kausa/bus-rtos/build/tfm/api_ns/platform/common/nrf91" TYPE DIRECTORY MESSAGE_NEVER FILES
+  file(INSTALL DESTINATION "C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns/platform/common/nrf91" TYPE DIRECTORY MESSAGE_NEVER FILES
     "C:/ncs/v2.7.0/modules/tee/tf-m/trusted-firmware-m/platform/ext/target/nordic_nrf/common/nrf91/partition"
     "C:/ncs/v2.7.0/modules/tee/tf-m/trusted-firmware-m/platform/ext/target/nordic_nrf/common/nrf91/tests"
     )

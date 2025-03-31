@@ -1,5 +1,5 @@
 @echo off
-cd /D C:\Users\kausa\bus-rtos\build\mcuboot || (set FAIL_LINE=2& goto :ABORT)
+cd /D C:\ncs\nRF9160_Examples\bus_rtos_local\build\mcuboot || (set FAIL_LINE=2& goto :ABORT)
 C:\ncs\toolchains\ce3b5ff664\opt\bin\cmake.exe -E echo adafruit_2_8_tft_touch_v2 || (set FAIL_LINE=3& goto :ABORT)
 C:\ncs\toolchains\ce3b5ff664\opt\bin\cmake.exe -E echo adafruit_2_8_tft_touch_v2_nano || (set FAIL_LINE=4& goto :ABORT)
 C:\ncs\toolchains\ce3b5ff664\opt\bin\cmake.exe -E echo adafruit_can_picowbell || (set FAIL_LINE=5& goto :ABORT)

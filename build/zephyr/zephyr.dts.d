@@ -31,4 +31,4 @@ empty_file.o: C:/ncs/v2.7.0/zephyr/misc/empty_file.c \
  C:/ncs/v2.7.0/zephyr/boards/actinius/icarus/actinius_icarus_partition_conf.dtsi \
  C:/ncs/v2.7.0/zephyr/boards/actinius/icarus/actinius_icarus_nrf9160_ns_2_0_0.overlay \
  C:/ncs/v2.7.0/zephyr/boards/actinius/icarus/actinius_icarus_common_2_0_0.dtsi \
- C:/Users/kausa/bus-rtos/boards/actinius_icarus_ns.overlay
+ C:/ncs/nRF9160_Examples/bus_rtos_local/boards/actinius_icarus_ns.overlay

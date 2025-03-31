@@ -39,6 +39,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/zephyr/subsys/net/l2/offloaded_netdev/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/subsys/net/l2/offloaded_netdev/cmake_install.cmake")
 endif()
 

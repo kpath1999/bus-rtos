@@ -39,11 +39,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/nrf/subsys/nrf_security/crypto_copy/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/nrf_security/crypto_copy/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/modules/nrf/subsys/nrf_security/src/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/nrf_security/src/cmake_install.cmake")
 endif()
 

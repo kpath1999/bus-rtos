@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/kausa/bus-rtos/build/mcuboot/modules/cmsis/cmsis/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/mcuboot/modules/cmsis/cmsis/cmake_install.cmake")
 
 endif()
 
