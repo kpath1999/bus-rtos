@@ -88,20 +88,44 @@ When StingSense is operational, it generates output similar to this:
 ```
 Sensor Data
 -------------------------------------------------------------------------------
-Date/Time: 2025-03-17 14:55:00 EST
-Acceleration: X: -0.153228 (m/s^2), Y: 7.048488 (m/s^2), Z: 6.435576 (m/s^2)
-GPS: Lat: 42.360100, Lon: -71.058900, Alt: 10.500000
+Date/Time: 2025-03-31 21:24:00 EDT
+Acceleration Stats (3s Window):
+  Mean: 9.803 ± 0.045 (m/s²)
+  Percentiles: 1%=9.798, 10%=9.800, 90%=9.806, 99%=9.811 (m/s²)
+GPS: Lat: 42.360100, Lon: -71.058900, Alt: 10.50 m
+Speed: 12.34 m/s, Bearing: 45.5°
 -------------------------------------------------------------------------------
-JSON Data: {"datetime":"2025-03-17 14:55:00 EST","latitude":42.3601,"longitude":-71.0589,"altitude":10.5,"x_accel":-0.153228,"y_accel":7.048488,"z_accel":6.435576}
+JSON Data: {
+  "datetime": "2025-03-31 21:24:00 EDT",
+  "location": {
+    "lat": 42.360100,
+    "lon": -71.058900,
+    "alt": 10.50
+  },
+  "acceleration": {
+    "mean": 9.803,
+    "stddev": 0.045,
+    "percentiles": {
+      "p1": 9.798,
+      "p10": 9.800,
+      "p90": 9.806,
+      "p99": 9.811
+    }
+  },
+  "movement": {
+    "speed": 12.34,
+    "bearing": 45.5
+  }
+}
 -------------------------------------------------------------------------------
 Data successfully sent over LTE.
 ```
 
 I hope to get there soon. Currently, this is what'd you see in the serial output:
 
-![terminal window from actinius](images/serial-output-3-21-2025.png)
+![terminal window from actinius](images/03302025-curr-output.png)
 
-Acceleration looks fine, but the date/time values do not make sense. I also have to validate if the GPS satellite detection works by moving my set-up outside.
+Pretty close. I must normalize the accelerometer values, calculate mean and standard deviation during the 3-second gap, as well as the 1-10 percentile and 90-99 percentile IMU measurements.
 
 ## 📝 **Implementation Notes**
 
