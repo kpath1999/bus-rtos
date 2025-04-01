@@ -91,7 +91,6 @@ Sensor Data
 Date/Time: 2025-03-31 21:24:00 EDT
 Acceleration Stats (3s Window):
   Mean: 9.803 ± 0.045 (m/s²)
-  Percentiles: 1%=9.798, 10%=9.800, 90%=9.806, 99%=9.811 (m/s²)
 GPS: Lat: 42.360100, Lon: -71.058900, Alt: 10.50 m
 Speed: 12.34 m/s, Bearing: 45.5°
 -------------------------------------------------------------------------------
@@ -102,14 +101,32 @@ JSON Data: {
     "lon": -71.058900,
     "alt": 10.50
   },
-  "acceleration": {
+  "acc_norm": {
     "mean": 9.803,
     "stddev": 0.045,
-    "percentiles": {
+    "acc_x": {
+      "percentiles": {
       "p1": 9.798,
       "p10": 9.800,
       "p90": 9.806,
       "p99": 9.811
+      }
+    },
+    "acc_y": {
+      "percentiles": {
+      "p1": 5.900,
+      "p10": 8.200,
+      "p90": 7.600,
+      "p99": 2.100
+      }
+    },
+    "acc_z": {
+      "percentiles": {
+      "p1": 4.300,
+      "p10": 2.700,
+      "p90": 5.200,
+      "p99": 3.800
+      }
     }
   },
   "movement": {
@@ -125,7 +142,7 @@ I hope to get there soon. Currently, this is what'd you see in the serial output
 
 ![terminal window from actinius](images/03302025-curr-output.png)
 
-Pretty close. I must normalize the accelerometer values, calculate mean and standard deviation during the 3-second gap, as well as the 1-10 percentile and 90-99 percentile IMU measurements.
+Pretty close. I must normalize the accelerometer values, calculate mean and standard deviation during the 3-second gap, as well as the 1-10 percentile and 90-99 percentile IMU axis measurements.
 
 ## 📝 **Implementation Notes**
 
