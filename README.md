@@ -101,7 +101,7 @@ JSON Data: {
     "lon": -71.058900,
     "alt": 10.50
   },
-  "acc_norm": {
+  "accelerometer": {
     "mean": 9.803,
     "stddev": 0.045,
     "acc_x": {
