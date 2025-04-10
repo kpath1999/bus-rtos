@@ -140,9 +140,9 @@ Data successfully sent over LTE.
 
 I hope to get there soon. Currently, this is what'd you see in the serial output:
 
-![terminal window from actinius](images/03302025-curr-output.png)
+![terminal window from actinius](images/serial-output-apr1_2025.jpg)
 
-Pretty close. I must normalize the accelerometer values, calculate mean and standard deviation during the 3-second gap, as well as the 1-10 percentile and 90-99 percentile IMU axis measurements.
+Pretty close. Now all I have to ensure is that the data transmits successfully over LTE.
 
 ## 📝 **Implementation Notes**
 

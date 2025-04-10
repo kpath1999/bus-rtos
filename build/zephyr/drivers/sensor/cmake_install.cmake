@@ -39,121 +39,121 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/adi/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/adi/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/ams/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/ams/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/aosong/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/aosong/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/asahi_kasei/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/asahi_kasei/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/bosch/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/bosch/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/espressif/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/espressif/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/honeywell/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/honeywell/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/infineon/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/infineon/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/ite/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/ite/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/maxim/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/maxim/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/meas/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/meas/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/microchip/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/microchip/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/nordic/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/nordic/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/nuvoton/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/nuvoton/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/nxp/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/nxp/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/rohm/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/rohm/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/seeed/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/seeed/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/sensirion/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/sensirion/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/silabs/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/silabs/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/st/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/st/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/ti/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/ti/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/vishay/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/vishay/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/wsen/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/wsen/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/zephyr/drivers/sensor/voltage_divider/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/zephyr/drivers/sensor/voltage_divider/cmake_install.cmake")
 endif()
 

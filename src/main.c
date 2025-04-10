@@ -678,19 +678,43 @@ static void print_fix_data(struct nrf_modem_gnss_pvt_data_frame *pvt_data)
  * and display sensor data from Georgia Tech buses.
  */
 
-// Structure to hold consolidated sensor data
-struct sensor_data {
-	struct datetime dt;
-	double x_accel;
-	double y_accel;
-	double z_accel;
-	bool gps_fix_valid;
-	double latitude;
-	double longitude;
-	double altitude;
-	uint32_t seconds_since_fix;
-	char nmea_str[256];
+// Structure for accelerometer statistics
+struct accel_stats {
+    double mean;
+    double variance;
+    double p1;
+    double p10;
+    double p90;
+    double p99;
 };
+
+/**
+ * Structure to hold consolidated sensor data
+ */
+struct sensor_data {
+    struct datetime dt;
+    double normalized_accel;
+    bool gps_fix_valid;
+    double latitude;
+    double longitude;
+    double altitude;
+    uint32_t seconds_since_fix;
+    char nmea_str[256];
+    double speed;
+    double bearing;
+    // Stats for normalized acceleration (magnitude)
+    struct accel_stats accel_stats;
+    // Percentile stats for individual axes
+    struct accel_stats accel_stats_x;
+    struct accel_stats accel_stats_y;
+    struct accel_stats accel_stats_z;
+};
+
+#define ACCEL_BUF_SIZE 60	// 3s * 20 samples/s
+
+// Function prototypes
+void calculate_stats(double *buf, size_t count, struct accel_stats *stats);
+static void convert_gps_to_eastern(const struct nrf_modem_gnss_datetime *gps_time, struct datetime *local_time);
 
 // Function to convert GPS time to Eastern Time
 static void convert_gps_to_eastern(const struct nrf_modem_gnss_datetime *gps_time, struct datetime *local_time)
@@ -781,9 +805,36 @@ static int collect_sensor_data(struct sensor_data *data)
         }
     }
     
-    // Get accelerometer data
-    get_accelerometer_data(&data->x_accel, &data->y_accel, &data->z_accel);
-    // No need to check return value since function is void
+    // Get accelerometer data for x, y, z axes
+    double x, y, z;
+    // Static buffers for normalized magnitude and each axis
+    static double accel_buf[ACCEL_BUF_SIZE];
+    static double accel_buf_x[ACCEL_BUF_SIZE];
+    static double accel_buf_y[ACCEL_BUF_SIZE];
+    static double accel_buf_z[ACCEL_BUF_SIZE];
+    static size_t sample_count = 0;
+
+    get_accelerometer_data(&x, &y, &z);
+    // Calculate normalized acceleration (magnitude)
+    data->normalized_accel = sqrt(x * x + y * y + z * z);
+
+    // Store the normalized magnitude and axis values in their respective circular buffers
+    accel_buf[sample_count % ACCEL_BUF_SIZE] = data->normalized_accel;
+    accel_buf_x[sample_count % ACCEL_BUF_SIZE] = x;
+    accel_buf_y[sample_count % ACCEL_BUF_SIZE] = y;
+    accel_buf_z[sample_count % ACCEL_BUF_SIZE] = z;
+    sample_count++;
+
+    // Calculate stats every 3 seconds (60 samples)
+    if (sample_count >= ACCEL_BUF_SIZE) {
+        // Compute mean and variance for normalized acceleration
+        calculate_stats(accel_buf, ACCEL_BUF_SIZE, &data->accel_stats);
+        // Compute percentiles for each axis
+        calculate_stats(accel_buf_x, ACCEL_BUF_SIZE, &data->accel_stats_x);
+        calculate_stats(accel_buf_y, ACCEL_BUF_SIZE, &data->accel_stats_y);
+        calculate_stats(accel_buf_z, ACCEL_BUF_SIZE, &data->accel_stats_z);
+        sample_count = 0;
+    }
 
 	// Process GPS data
 	data->gps_fix_valid = (last_pvt.flags & NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID) != 0;
@@ -793,6 +844,8 @@ static int collect_sensor_data(struct sensor_data *data)
 		data->latitude = last_pvt.latitude;
 		data->longitude = last_pvt.longitude;
 		data->altitude = last_pvt.altitude;
+		data->speed = last_pvt.speed;
+		data->bearing = last_pvt.heading;
 		fix_timestamp = k_uptime_get(); // update fix timestamp
 		data->seconds_since_fix = 0;
 	} else {
@@ -805,45 +858,124 @@ static int collect_sensor_data(struct sensor_data *data)
 // Function to display all sensor data in a consistent, atomic operation
 static void display_sensor_data(const struct sensor_data *data, uint8_t cnt)
 {
-	if (data == NULL) {
-		return;
-	}
+    if (data == NULL) {
+        return;
+    }
 
-	// Clear screen using ANSI escape sequences
-	printk("\033[1;1H");  // Move cursor to top-left
-	printk("\033[2J");    // Clear screen
+    // Clearing the screen
+    printk("\033[1;1H");
+    printk("\033[2J");
 
-	// Display header and timestamp
-    printk("===== StingSense Bus Monitoring System =====\n\n");
-    
-    // Display all sensor data in a consistent format
-    printk("Sensor Data\n");
+    // printk("===== StingSense Bus Monitoring System =====\n\n");
+    // printk("Sensor Data\n");
     printk("-------------------------------------------------------------------------------\n");
     printk("Date/Time: %04d-%02d-%02d %02d:%02d:%02d EDT\n", 
            data->dt.year, data->dt.month, data->dt.day,
            data->dt.hour, data->dt.minute, data->dt.second);
     
-    printk("Acceleration: X: %f (m/s^2), Y: %f (m/s^2), Z: %f (m/s^2)\n",
-           data->x_accel, data->y_accel, data->z_accel);
-    
     if (data->gps_fix_valid) {
-        printk("GPS: Lat: %f, Lon: %f, Alt: %f\n", 
-               data->latitude, data->longitude, data->altitude);
+        printk("GPS: Lat: %f, Lon: %f, Alt: %f\nSpeed: %.2f m/s, Bearing: %.1f°\n",
+               data->latitude, data->longitude, data->altitude,
+               data->speed, data->bearing);
     } else {
         printk("GPS: Searching [%c] (No fix for %u seconds)\n", 
                update_indicator[cnt % 4], data->seconds_since_fix);
     }
+
+    if (data->accel_stats.mean > 0) {
+        printk("Acceleration Stats (3s Window):\n");
+        printk("  Mean (Magnitude): %.3f (m/s²)\n", data->accel_stats.mean);
+        printk("  Variance (Magnitude): %.3f (m/s²)²\n", data->accel_stats.variance);
+        printk("  Percentiles:\n");
+        printk("    X-Axis: p1=%.3f, p10=%.3f, p90=%.3f, p99=%.3f (m/s²)\n",
+               data->accel_stats_x.p1, data->accel_stats_x.p10,
+               data->accel_stats_x.p90, data->accel_stats_x.p99);
+        printk("    Y-Axis: p1=%.3f, p10=%.3f, p90=%.3f, p99=%.3f (m/s²)\n",
+               data->accel_stats_y.p1, data->accel_stats_y.p10,
+               data->accel_stats_y.p90, data->accel_stats_y.p99);
+        printk("    Z-Axis: p1=%.3f, p10=%.3f, p90=%.3f, p99=%.3f (m/s²)\n",
+               data->accel_stats_z.p1, data->accel_stats_z.p10,
+               data->accel_stats_z.p90, data->accel_stats_z.p99);
+    } else {
+        LOG_WRN("Invalid acceleration stats - window not complete");
+        return;
+    }
     printk("-------------------------------------------------------------------------------\n");
     
-    // Format data as JSON for potential transmission
-    printk("JSON Data: {\"datetime\":\"%04d-%02d-%02d %02d:%02d:%02d EDT\","
-           "\"latitude\":%f,\"longitude\":%f,\"altitude\":%f,"
-           "\"x_accel\":%f,\"y_accel\":%f,\"z_accel\":%f}\n",
-           data->dt.year, data->dt.month, data->dt.day,
-           data->dt.hour, data->dt.minute, data->dt.second,
-           data->latitude, data->longitude, data->altitude,
-           data->x_accel, data->y_accel, data->z_accel);
-    printk("-------------------------------------------------------------------------------\n");
+    // JSON output for data transmission
+
+	/**
+	 * Operational time: 10 hours/day × 5 days/week × 12 weeks = 600 hours
+	 * Transmissions: 600 hours × (60 minutes/hour) × (60 seconds/minute) ÷ 3 seconds = 720,000 transmissions
+	 * Data usage: 720,000 transmissions × 500 bytes = 360,000,000 bytes ≈ 343.32 MB
+	 */
+	// Including a few ideas below for how I can go about optimizing transmission rate
+	/**
+	 * Reducing the number of transmissions, especially when the vehicle is stationary (>15 mins)
+	 * A "stall detection" logic to conserve battery life and reduce network transmissions
+	 * Deep-sleep mode when the vehicle is stationary for a certain period of time (>60 mins)
+	 */
+
+    // printk("JSON Data: {\n"
+    //        "  \"datetime\": \"%04d-%02d-%02d %02d:%02d:%02d EDT\",\n"
+    //        "  \"location\": {\n"
+    //        "    \"lat\": %.6f,\n"
+    //        "    \"lon\": %.6f,\n"
+    //        "    \"alt\": %.2f\n"
+    //        "  },\n"
+    //        "  \"acceleration\": {\n"
+    //        "    \"mean\": %.3f,\n"
+    //        "    \"variance\": %.3f,\n"
+    //        "    \"percentiles\": {\n"
+    //        "      \"x\": {\"p1\": %.3f, \"p10\": %.3f, \"p90\": %.3f, \"p99\": %.3f},\n"
+    //        "      \"y\": {\"p1\": %.3f, \"p10\": %.3f, \"p90\": %.3f, \"p99\": %.3f},\n"
+    //        "      \"z\": {\"p1\": %.3f, \"p10\": %.3f, \"p90\": %.3f, \"p99\": %.3f}\n"
+    //        "    }\n"
+    //        "  },\n"
+    //        "  \"movement\": {\n"
+    //        "    \"speed\": %.2f,\n"
+    //        "    \"bearing\": %.1f\n"
+    //        "  }\n"
+    //        "}\n",
+    //        data->dt.year, data->dt.month, data->dt.day,
+    //        data->dt.hour, data->dt.minute, data->dt.second,
+    //        data->latitude, data->longitude, data->altitude,
+    //        data->accel_stats.mean,
+    //        data->accel_stats.variance,
+    //        data->accel_stats_x.p1, data->accel_stats_x.p10,
+    //        data->accel_stats_x.p90, data->accel_stats_x.p99,
+    //        data->accel_stats_y.p1, data->accel_stats_y.p10,
+    //        data->accel_stats_y.p90, data->accel_stats_y.p99,
+    //        data->accel_stats_z.p1, data->accel_stats_z.p10,
+    //        data->accel_stats_z.p90, data->accel_stats_z.p99,
+    //        data->speed,
+    //        data->bearing);
+    // printk("-------------------------------------------------------------------------------\n");
+}
+
+// Functions for statistical calculations
+static int compare_double(const void *a, const void *b) {
+	return (*(double*)a > *(double*)b) ? 1 : -1;
+}
+
+void calculate_stats(double *buf, size_t count, struct accel_stats *stats) {
+	if (count < 1) return;
+
+	// calculate mean and variance
+	double sum = 0.0, sum_sq = 0.0;
+	for (size_t i = 0; i < count; i++) {
+		sum += buf[i];
+		sum_sq += buf[i] * buf[i];
+	}
+	stats->mean = sum / count;
+	stats->variance = (sum_sq / count) - (stats->mean * stats->mean);
+
+	// calculate the percentiles
+	qsort(buf, count, sizeof(double), compare_double);
+	stats->p1 = buf[(int)(count * 0.01)];
+	stats->p10 = buf[(int)(count * 0.10)];
+	stats->p90 = buf[(int)(count * 0.90)];
+	stats->p99 = buf[(int)(count * 0.99)];
 }
 
 int main(void)
@@ -862,13 +994,6 @@ int main(void)
     if (err) {
         LOG_ERR("Antenna config failed: %d", err);
     }
-
-	// Enable GPS with periodic fixes
-	// TODO: is this even needed?
-	// err = gnss_enable();
-	// if (err) {
-	// 	LOG_ERR("GNSS enable failed: %d", err);
-	// }
     
     // Initialize modem library for cellular communication
     err = nrf_modem_lib_init();

@@ -66,7 +66,7 @@ set(INCLUDE_PANIC_TESTS                       CACHE BOOL      "Include panic tes
 set(ATTEST_KEY_BITS                        256                        CACHE STRING "The size of the initial attestation key in bits")
 set(SYMMETRIC_INITIAL_ATTESTATION          OFF          CACHE BOOL   "Use symmetric crypto for inital attestation")
 set(ATTEST_INCLUDE_TEST_CODE               OFF               CACHE BOOL   "Include minimal development tests in the initial attestation regression test suite")
-set(TFM_MBEDCRYPTO_PSA_CRYPTO_CONFIG_PATH  C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/nrf_security/src/include/generated/nrf-psa-crypto-want-config.h  CACHE STRING "Config to use psa crypto setting for Mbed Crypto")
+set(TFM_MBEDCRYPTO_PSA_CRYPTO_CONFIG_PATH  C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/nrf_security/src/include/generated/nrf-psa-crypto-want-config.h  CACHE STRING "Config to use psa crypto setting for Mbed Crypto")
 set(CC312_LEGACY_DRIVER_API_ENABLED                CACHE BOOL   "This variable controls whether the legacy driver interface is used for CC-312")
 
 set(TFM_FWU_BOOTLOADER_LIB                 mcuboot              CACHE STRING    "Bootloader configure file for Firmware Update partition")

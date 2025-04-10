@@ -39,46 +39,46 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/bootloader/bl_override/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/bootloader/bl_override/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/nrf_security/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/nrf_security/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/net/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/net/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/dfu/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/dfu/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/mpsl/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/mpsl/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/shell/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/shell/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/debug/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/debug/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/partition_manager/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/partition_manager/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/subsys/suit/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/subsys/suit/cmake_install.cmake")
 endif()
 

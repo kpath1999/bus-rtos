@@ -39,10 +39,10 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/mcuboot/modules/nrf/drivers/hw_cc3xx/cmake_install.cmake")
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/mcuboot/modules/nrf/drivers/entropy/cmake_install.cmake")
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/mcuboot/modules/nrf/drivers/serial/cmake_install.cmake")
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/mcuboot/modules/nrf/drivers/flash/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/mcuboot/modules/nrf/drivers/hw_cc3xx/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/mcuboot/modules/nrf/drivers/entropy/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/mcuboot/modules/nrf/drivers/serial/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/mcuboot/modules/nrf/drivers/flash/cmake_install.cmake")
 
 endif()
 

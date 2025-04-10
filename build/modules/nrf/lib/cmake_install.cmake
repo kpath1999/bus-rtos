@@ -39,51 +39,51 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/bin/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/bin/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/nrf_modem_lib/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/nrf_modem_lib/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/at_monitor/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/at_monitor/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/at_host/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/at_host/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/at_cmd_parser/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/at_cmd_parser/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/lte_link_control/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/lte_link_control/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/flash_patch/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/flash_patch/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/fatal_error/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/fatal_error/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/date_time/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/date_time/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/modules/nrf/lib/boot_banner/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/modules/nrf/lib/boot_banner/cmake_install.cmake")
 endif()
 

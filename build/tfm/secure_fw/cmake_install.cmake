@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/api_ns")
+  set(CMAKE_INSTALL_PREFIX "C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/tfm/api_ns")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,11 +39,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/secure_fw/spm/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/tfm/secure_fw/spm/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/ncs/nRF9160_Examples/bus_rtos_local/build/tfm/secure_fw/partitions/cmake_install.cmake")
+  include("C:/ncs/nRF9160_Examples/bus_rtos_local_stage/build/tfm/secure_fw/partitions/cmake_install.cmake")
 endif()
 
