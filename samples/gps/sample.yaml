@@ -1,8 +1,0 @@
-sample:
-  name: GPS sample
-tests:
-  samples.nrf9160.gps:
-    build_only: true
-    build_on_all: true
-    platform_whitelist: actinius_icarus_ns
-    tags: ci_build

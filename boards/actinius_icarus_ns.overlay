@@ -1,9 +1,0 @@
-/ {
-    aliases {
-        rtc = &rtc0;
-    };
-};
-
-&rtc0 {
-    status = "okay";
-};

@@ -1,1 +1,0 @@
-Prints out accelerometer values.
