@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "gps_helper.h": "c"
+    },
+    "git.ignoreLimitWarning": true
+}
