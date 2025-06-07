@@ -9,6 +9,8 @@ import json # For S3 data
 import datetime # For S3 filenames
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError # For AWS errors
 
+import argparse
+
 # --- Configuration ---
 SERIAL_PORT = 'COM3'  # Adjust to your serial port
 BAUD_RATE = 115200    # Match the baud rate of your Icarus device
@@ -22,6 +24,8 @@ AWS_S3_REGION = 'us-east-2' # e.g., 'us-east-1'
 # Ensure your AWS credentials are configured in your environment
 # (e.g., via `aws configure` CLI command, or environment variables AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
 s3_client = boto3.client('s3', region_name=AWS_S3_REGION)
+
+S3_BUS_TYPE_PREFIX = "default_bus_type"
 
 # --- Globals to store the latest sensor data ---
 # "raw_lines" is removed from here, so it won't be part of the local API response
@@ -54,7 +58,11 @@ def get_data():
 
 @app.route('/', methods=['GET'])
 def get_status():
-    return jsonify({"status": "Serial to API bridge running. Access data at /data. Uploading to S3."})
+    global S3_BUS_TYPE_PREFIX
+    return jsonify({
+        "status": "Serial to API bridge running. Access data at /data. Uploading to S3.",
+        "bus_type_configured": S3_BUS_TYPE_PREFIX # Show the configured bus type
+    })
 
 # --- Function to Send Data to AWS S3 ---
 def send_to_external_storage(data_to_send):
@@ -62,6 +70,7 @@ def send_to_external_storage(data_to_send):
     Uploads the provided data dictionary as a JSON file to AWS S3.
     The filename will be timestamped.
     """
+    global S3_BUS_TYPE_PREFIX # Access the global variable
     try:
         # data_to_send should already be clean (no raw_lines), but good practice to ensure.
         if 'raw_lines' in data_to_send:
@@ -84,7 +93,7 @@ def send_to_external_storage(data_to_send):
             s3_timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H-%M-%SZ')
 
         # TODO: change this to the bus type when you begin data collection
-        filename = f"sensor_data/bus_trip_alpha/data_{s3_timestamp}.json" # Example with a "folder" structure
+        filename = f"sensor_data/{S3_BUS_TYPE_PREFIX}/data_{s3_timestamp}.json"
 
         s3_client.put_object(Bucket=AWS_S3_BUCKET, Key=filename, Body=json_data_for_s3, ContentType='application/json')
         print(f"Successfully uploaded {filename} to S3 bucket {AWS_S3_BUCKET}")
@@ -213,7 +222,15 @@ def parse_sensor_block(block_lines):
 
 # --- Main Execution ---
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Serial to API bridge with S3 upload. Takes bus_type as an argument.")
+    parser.add_argument('bus_type', type=str, help='Identifier for the bus type/trip (e.g., "gold", "blue"). This will be used in the S3 path.')
+    args = parser.parse_args()
+
+    # Set the global S3_BUS_TYPE_PREFIX from the command line argument
+    S3_BUS_TYPE_PREFIX = args.bus_type
+
     print("Starting sensor data to API bridge with S3 upload.")
+    print(f"Configured for bus type: {S3_BUS_TYPE_PREFIX}")
     print(f"Ensure AWS credentials are configured for S3 bucket '{AWS_S3_BUCKET}' in region '{AWS_S3_REGION}'.")
     
     serial_thread = threading.Thread(target=read_serial_data, daemon=True)

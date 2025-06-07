@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bus Route Geospatial Data</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { height: 100vh; width: 100vw; }
+        .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; }
+        .info h4 { margin: 0 0 5px; color: #777; }
+        /* *** MODIFIED AREA START *** */
+        /* Styling for the new checkbox control panel */
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 800; /* Make sure it's on top of the map */
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        #controls label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        #controls input {
+            margin-right: 5px;
+        }
+        /* *** MODIFIED AREA END *** */
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- *** MODIFIED AREA START *** -->
+<!-- HTML structure for the checkbox control panel -->
+<div id="controls">
+    <h4>Filter by Mean Acceleration</h4>
+    <!-- Checkboxes will be dynamically added here by the script -->
+</div>
+<!-- *** MODIFIED AREA END *** -->
+
+
+<script>
+    var map = L.map('map').setView([33.776, -84.389], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // --- Data Configuration ---
+    // These values are from your analysis script.
+    const grades = [0, 9.2400, 9.2600, 9.3060, 9.3240];
+    const colors = ['#d73027', '#fc8d59', '#fee08b', '#d9ef8b', '#91cf60'];
+
+    // Function to determine which category a value falls into
+    function getCategoryIndex(accel) {
+        for (let i = 1; i < grades.length; i++) {
+            if (accel <= grades[i]) {
+                return i - 1;
+            }
+        }
+        return grades.length - 1; // Return the last category for values greater than all grades
+    }
+    
+    // An object to hold our Leaflet layer groups, one for each category
+    const layerGroups = {};
+
+    // --- Checkbox and Layer Initialization ---
+    const controlsDiv = document.getElementById('controls');
+
+    grades.forEach((grade, i) => {
+        const from = grade;
+        const to = grades[i + 1];
+        const labelText = from.toFixed(4) + (to ? ` &ndash; ${to.toFixed(4)}` : '+');
+        
+        // Create a layer group for this category
+        layerGroups[i] = L.layerGroup().addTo(map); // Add to map by default
+
+        // Create the checkbox and label
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox-${i}`;
+        checkbox.checked = true; // Checked by default
+        
+        const label = document.createElement('label');
+        label.htmlFor = `checkbox-${i}`;
+        label.innerHTML = `<span style="background-color:${colors[i]}; padding: 1px 8px; border-radius: 3px;">&nbsp;</span> ${labelText}`;
+        
+        // Event listener to toggle layers
+        checkbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                map.addLayer(layerGroups[i]);
+            } else {
+                map.removeLayer(layerGroups[i]);
+            }
+        });
+
+        controlsDiv.appendChild(checkbox);
+        controlsDiv.appendChild(label);
+        controlsDiv.appendChild(document.createElement('br'));
+    });
+
+    // --- Data Loading and Processing ---
+    fetch('bus_route.geojson')
+        .then(response => response.json())
+        .then(data => {
+            L.geoJSON(data, {
+                // This function is now just for processing, not for creating a single layer
+                onEachFeature: function (feature, layer) {
+                    const props = feature.properties;
+                    const accel = props.accel_mean;
+                    const categoryIndex = getCategoryIndex(accel);
+                    
+                    const marker = L.circleMarker(layer.getLatLng(), {
+                        radius: 6,
+                        fillColor: colors[categoryIndex],
+                        color: "#000",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    });
+
+                    // Build the popup content
+                    const popupContent = `
+                        <b>Timestamp:</b> ${props.timestamp}<br>
+                        <hr>
+                        <b>Mean Accel:</b> ${props.accel_mean.toFixed(3)} m/s²<br>
+                        <b>Accel Variance:</b> ${props.accel_variance.toFixed(3)} (m/s²)²<br>
+                        <hr>
+                        <b>X-Axis p99:</b> ${props.accel_stats_x_p99.toFixed(3)}<br>
+                        <b>Y-Axis p99:</b> ${props.accel_stats_y_p99.toFixed(3)}<br>
+                        <b>Z-Axis p99:</b> ${props.accel_stats_z_p99.toFixed(3)}<br>
+                    `;
+                    marker.bindPopup(popupContent);
+                    
+                    // Add the marker to the correct layer group
+                    if (layerGroups[categoryIndex]) {
+                        layerGroups[categoryIndex].addLayer(marker);
+                    }
+                }
+            });
+            
+            // Fit map to data bounds by combining all layer bounds
+            const allBounds = L.latLngBounds();
+            Object.values(layerGroups).forEach(group => {
+                const groupBounds = group.getBounds();
+                if (groupBounds.isValid()) {
+                    allBounds.extend(groupBounds);
+                }
+            });
+            if (allBounds.isValid()) {
+                map.fitBounds(allBounds);
+            }
+        });
+
+</script>
+
+</body>
+</html>
